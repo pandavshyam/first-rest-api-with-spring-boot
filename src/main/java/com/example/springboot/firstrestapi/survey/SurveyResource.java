@@ -38,4 +38,12 @@ public class SurveyResource {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     return questions;
   }
+
+  @RequestMapping("/surveys/{surveyId}/questions/{questionId}")
+  public Question retrieveSpecificSurveyQuestion(@PathVariable String surveyId, @PathVariable String questionId){
+    Question question = surveyService.retrieveSpecificSurveyQuestion(surveyId, questionId);
+    if (question == null)
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    return question;
+  }
 }

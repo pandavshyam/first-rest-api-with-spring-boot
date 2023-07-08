@@ -48,4 +48,12 @@ public class SurveyService {
     if (survey == null) return null;
     return survey.getQuestions();
   }
+
+  public Question retrieveSpecificSurveyQuestion(String surveyId, String questionId) {
+    List<Question> surveyQuestion = retrieveAllSurveyQuestions(surveyId);
+    if (surveyQuestion == null) return null;
+    Optional<Question> question = surveyQuestion.stream().filter(q -> q.getId().equalsIgnoreCase(questionId)).findFirst();
+    if (question.isEmpty()) return null;
+    return question.get();
+  }
 }
