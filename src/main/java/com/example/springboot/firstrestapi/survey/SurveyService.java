@@ -3,6 +3,8 @@ package com.example.springboot.firstrestapi.survey;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 import org.springframework.stereotype.Service;
 
@@ -32,5 +34,12 @@ public class SurveyService {
 
   public List<Survey> retrieveAllSurveys() {
     return surveys;
+  }
+
+  public Survey retrieveSurveyById(String surveyId) {
+    Predicate<? super Survey> predicate = survey -> survey.getId().equalsIgnoreCase(surveyId);
+    Optional<Survey> optionalSurvey = surveys.stream().filter(predicate).findFirst();
+    if (optionalSurvey.isEmpty()) return null;
+    return optionalSurvey.get();
   }
 }
