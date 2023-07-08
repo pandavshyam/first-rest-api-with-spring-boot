@@ -30,4 +30,12 @@ public class SurveyResource {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     return survey;
   }
+
+  @RequestMapping("/surveys/{surveyId}/questions")
+  public List<Question> retrieveAllSurveyQuestions(@PathVariable String surveyId){
+    List<Question> questions = surveyService.retrieveAllSurveyQuestions(surveyId);
+    if (questions == null)
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    return questions;
+  }
 }

@@ -42,4 +42,10 @@ public class SurveyService {
     if (optionalSurvey.isEmpty()) return null;
     return optionalSurvey.get();
   }
+
+  public List<Question> retrieveAllSurveyQuestions(String surveyId) {
+    Survey survey = retrieveSurveyById(surveyId);
+    if (survey == null) return null;
+    return survey.getQuestions();
+  }
 }
