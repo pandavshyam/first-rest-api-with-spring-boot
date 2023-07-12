@@ -1,5 +1,7 @@
 package com.example.springboot.firstrestapi.survey;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -55,5 +57,19 @@ public class SurveyService {
     Optional<Question> question = surveyQuestion.stream().filter(q -> q.getId().equalsIgnoreCase(questionId)).findFirst();
     if (question.isEmpty()) return null;
     return question.get();
+  }
+
+  public String addNewSurveyQuestion(String surveyId, Question question) {
+    List<Question> questions = retrieveAllSurveyQuestions(surveyId);
+    String randomId = generateRandomId();
+    question.setId(randomId);
+    questions.add(question);
+    return question.getId();
+  }
+
+  private String generateRandomId() {
+    SecureRandom secureRandom = new SecureRandom();
+    String randomId = new BigInteger(32, secureRandom).toString();
+    return randomId;
   }
 }
