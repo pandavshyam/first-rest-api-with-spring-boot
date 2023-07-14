@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -57,5 +58,21 @@ public class SurveyResource {
     String questionId = surveyService.addNewSurveyQuestion(surveyId, question);
     URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{questionId}").buildAndExpand(questionId).toUri();
     return ResponseEntity.created(location).build();
+  }
+
+  @RequestMapping(value = "/surveys/{surveyId}/questions/{questionId}", method = RequestMethod.DELETE)
+  public ResponseEntity<Object> deleteSpecificSurveyQuestion(@PathVariable String surveyId, @PathVariable String questionId){
+    String deletedQuestionId = surveyService.deleteSpecificSurveyQuestion(surveyId, questionId);
+    if (deletedQuestionId == null)
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    return ResponseEntity.noContent().build();
+  }
+
+  @RequestMapping(value = "/surveys/{surveyId}/questions/{questionId}", method = RequestMethod.PUT)
+  public ResponseEntity<Object> updateSpecificSurveyQuestion(@PathVariable String surveyId, @PathVariable String questionId, @RequestBody Question question){
+    String updatedQuestionId = surveyService.updateSpecificSurveyQuestion(surveyId, questionId, question);
+    if (updatedQuestionId == null)
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    return ResponseEntity.noContent().build();
   }
 }
