@@ -1,6 +1,7 @@
 package com.example.springboot.firstrestapi.survey;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
@@ -34,9 +35,9 @@ public class SurveyResourceIT {
     String expectedResponse = """
       {"id":"Question1","description":"Most Popular Cloud Platform Today","options":["AWS","Azure","Google Cloud","Oracle Cloud"],"correctAnswer":"AWS"}
         """;
+
+    assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
+    assertEquals("application/json", responseEntity.getHeaders().get("Content-Type").get(0));
     JSONAssert.assertEquals(expectedResponse, responseEntity.getBody(), true);
-    // assertEquals(expectedResponse.trim(), responseEntity.getBody());
-    // System.out.println(responseEntity.getBody());
-    // System.out.println(responseEntity.getHeaders());
   }
 }
