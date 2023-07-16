@@ -23,7 +23,7 @@ public class UserDetailsCommandLineRunner implements CommandLineRunner {
   public void run(String... args) throws Exception {
     logger.info(Arrays.toString(args).toString());
     repository.save(new UserDetails("Shyam", "admin"));
-    repository.save(new UserDetails("Prashant", "normal_user"));
+    repository.save(new UserDetails("Prashant", "user"));
     repository.save(new UserDetails("Kanchan", "admin"));
     repository.save(new UserDetails("Sangita", "admin"));
 
