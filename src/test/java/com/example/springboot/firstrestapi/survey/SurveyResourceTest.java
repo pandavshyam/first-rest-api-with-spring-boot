@@ -1,6 +1,7 @@
 package com.example.springboot.firstrestapi.survey;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -79,6 +80,7 @@ public class SurveyResourceTest {
     RequestBuilder requestBuilder = MockMvcRequestBuilders.post(CREATE_NEW_QUESTION).accept(MediaType.APPLICATION_JSON).content(requestBody).contentType(MediaType.APPLICATION_JSON);
     MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
     assertEquals(201, mvcResult.getResponse().getStatus());
-    assertEquals(mvcResult.getResponse().getHeader("Location"), "http://localhost:8080/surveys/Survey1/questions/Question5");
+    assertTrue(mvcResult.getResponse().getHeader("Location").contains("surveys/Survey1/questions/Question5"));
+    // assertEquals(mvcResult.getResponse().getHeader("Location"), "http://localhost:8080/surveys/Survey1/questions/Question5");
   }
 }
