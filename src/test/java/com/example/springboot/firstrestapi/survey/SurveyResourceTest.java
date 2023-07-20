@@ -1,6 +1,8 @@
 package com.example.springboot.firstrestapi.survey;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -26,6 +28,7 @@ public class SurveyResourceTest {
   private MockMvc mockMvc;
 
   private static String SPECIFIC_QUESTION_URL = "http://localhost:8080/surveys/Survey1/questions/Question1";
+  private static String CREATE_NEW_QUESTION = "http://localhost:8080/surveys/Survey1/questions";
 
   @Test
   void retrieveSpecificSurveyQuestion_404Scenario() throws Exception{
@@ -53,5 +56,29 @@ public class SurveyResourceTest {
 
     assertEquals(200, mvcResult.getResponse().getStatus());
     JSONAssert.assertEquals(expectedResponse, mvcResult.getResponse().getContentAsString(), true);
+  }
+
+  @Test
+  void addNewSurveyQuestion_basicScenario() throws Exception{
+    String requestBody =
+    """
+    {
+      "id": "Question 4",
+      "description": "Some text here",
+      "options": [
+          "AWS",
+          "Azure",
+          "Google Cloud",
+          "Oracle Cloud",
+          "Rackspace"
+      ],
+      "correctAnswer": "AWS"
+    }
+    """;
+    when(surveyService.addNewSurveyQuestion(anyString(), any())).thenReturn("Question5");
+    RequestBuilder requestBuilder = MockMvcRequestBuilders.post(CREATE_NEW_QUESTION).accept(MediaType.APPLICATION_JSON).content(requestBody).contentType(MediaType.APPLICATION_JSON);
+    MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
+    assertEquals(201, mvcResult.getResponse().getStatus());
+    assertEquals(mvcResult.getResponse().getHeader("Location"), "http://localhost:8080/surveys/Survey1/questions/Question5");
   }
 }
